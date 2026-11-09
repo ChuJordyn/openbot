@@ -1,0 +1,31 @@
+#!/bin/zsh
+set -eu
+config_dir="${0:A:h}"
+real_grok="${OPENBOT_REAL_GROK_PATH:-$HOME/.grok/bin/grok}"
+if [[ ! -x "$real_grok" ]]; then
+  print -u2 'Grok CLI not found. Install Grok Build or set grokPath in settings.json.'
+  exit 127
+fi
+
+# Version, sign-in and account commands continue to use the unmodified official CLI.
+if [[ " $* " == *" agent "* && " $* " == *" stdio "* ]]; then
+  export GROK_CLAUDE_SKILLS_ENABLED=0
+  export GROK_CURSOR_SKILLS_ENABLED=0
+  export GROK_CLAUDE_MCPS_ENABLED=0
+  export GROK_CURSOR_MCPS_ENABLED=0
+  export GROK_CLAUDE_HOOKS_ENABLED=0
+  export GROK_CURSOR_HOOKS_ENABLED=0
+  export GROK_SUBAGENTS=0
+  export GROK_WORKFLOWS=0
+  export GROK_FEEDBACK_ENABLED=0
+  export PYTHONDONTWRITEBYTECODE=1
+  args=()
+  for arg in "$@"; do
+    args+=("$arg")
+    if [[ "$arg" == "agent" ]]; then
+      args+=(--agent-profile "$config_dir/coordinator.md")
+    fi
+  done
+  exec /usr/bin/python3 "$config_dir/acp_bridge.py" "$real_grok" "${args[@]}"
+fi
+exec "$real_grok" "$@"

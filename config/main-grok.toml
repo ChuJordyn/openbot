@@ -1,0 +1,13 @@
+[compat.claude]
+skills = false
+mcps = false
+hooks = false
+[compat.cursor]
+skills = false
+mcps = false
+hooks = false
+[compat.codex]
+skills = false
+hooks = false
+[skills]
+disabled = ["chrome-browser", "morning", "built-in-browser", "computer-use", "deep-research", "docs", "google-workspace", "import-memory", "setup-writing-style", "build-with-ai", "create-skill", "create-workflow", "design", "docx", "execute-plan", "game-assets", "imagine", "learn", "long-running-background-tasks", "pdf", "pptx", "resume-claude", "resume-codex", "resume-cursor", "review", "skill-design-principles", "statusline", "threejs-frame-conventions"]
